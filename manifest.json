@@ -1,13 +1,13 @@
 {
-  "name": "IE Cycle Timer",
-  "short_name": "Cycle Timer",
-  "description": "Continuous and Start/Stop cycle timing with Normal and Standard time calculation for time studies.",
+  "name": "Snow Timer",
+  "short_name": "Snow Timer",
+  "description": "Snowtex cycle time study app. Continuous and Start/Stop timing with Normal and Standard time calculation.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#000000",
-  "theme_color": "#000000",
+  "theme_color": "#215da5",
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
