@@ -45,16 +45,20 @@ body{background:radial-gradient(1200px 600px at 50% -10%,rgba(33,93,165,.25),tra
 .display.live .track{opacity:1}
 .track i{display:block;height:100%;width:38%;border-radius:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);animation:slide 1.3s linear infinite}
 @keyframes slide{from{transform:translateX(-120%)}to{transform:translateX(360%)}}
+.curRow{display:flex;align-items:baseline;justify-content:center;gap:5px}
 #cur{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;font-size:clamp(52px,17vw,88px);font-weight:700;color:var(--green);line-height:1.05;text-shadow:0 0 22px rgba(57,255,136,.3);margin:2px 0}
+.curUnit{font-size:clamp(13px,3.2vw,17px);font-weight:300;color:var(--dim);font-style:normal}
 .display.live #cur{color:#fff}
 .unit{color:var(--dim);font-size:12px}
+.u{font-size:10px;font-weight:300;font-style:normal;color:var(--dim);margin-left:2px;letter-spacing:.01em}
 .result{flex:0 0 auto;display:flex;gap:8px}
 .result-card{flex:1;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:11px 8px;text-align:center}
 .result-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 25% 15%,rgba(34,211,238,.1),transparent 55%);pointer-events:none}
 .result-card span{display:block;font-size:10.5px;color:var(--dim);font-weight:600;letter-spacing:.02em}
 .result-card span i{font-style:normal;opacity:.75}
-.result-card b{display:block;font-size:25px;font-variant-numeric:tabular-nums;color:var(--text);margin-top:1px}
-.result-card small{font-size:9.5px;color:var(--dim)}
+.result-card b{display:inline-block;font-size:25px;font-variant-numeric:tabular-nums;color:var(--text);margin-top:1px}
+.result-card small{display:block;font-size:9.5px;color:var(--dim)}
+.result-card .u{font-size:11px;margin-left:3px}
 .result-card.hi{border-color:rgba(34,211,238,.45)}
 .result-card.hi b{color:var(--cyan)}
 .bump{animation:bump .28s ease}
@@ -133,21 +137,21 @@ body{background:radial-gradient(1200px 600px at 50% -10%,rgba(33,93,165,.25),tra
   </div>
   <div class="display" id="display">
     <div class="status"><span class="led"></span><span id="curlabel">Current cycle</span></div>
-    <div id="cur">0.00</div>
+    <div class="curRow"><div id="cur">0.00</div><span class="curUnit">min</span></div>
     <div class="unit">decimal minutes (100 = 1 min)</div>
     <div class="track"><i></i></div>
   </div>
   <div class="result">
-    <div class="result-card"><span>Normal Time</span><b id="sNorm">0.00</b><small>min / cycle</small></div>
-    <div class="result-card hi"><span>Standard Time <i>(SMV)</i></span><b id="sStd">0.00</b><small>min / cycle</small></div>
+    <div class="result-card"><span>Normal Time</span><b id="sNorm">0.00</b><i class="u">min</i><small>/ cycle</small></div>
+    <div class="result-card hi"><span>Standard Time <i>(SMV)</i></span><b id="sStd">0.00</b><i class="u">min</i><small>/ cycle</small></div>
   </div>
   <div class="stats">
     <div class="stat"><span>Count</span><b id="sCount">0</b></div>
-    <div class="stat"><span>Total</span><b id="sTotal">0.00</b></div>
-    <div class="stat"><span>Average</span><b id="sAvg">0.00</b></div>
-    <div class="stat"><span>Std dev</span><b id="sSd">0.00</b></div>
-    <div class="stat"><span>Min</span><b id="sMin">0.00</b></div>
-    <div class="stat"><span>Max</span><b id="sMax">0.00</b></div>
+    <div class="stat"><span>Total</span><b id="sTotal">0.00</b><i class="u">min</i></div>
+    <div class="stat"><span>Average</span><b id="sAvg">0.00</b><i class="u">min</i></div>
+    <div class="stat"><span>Std dev</span><b id="sSd">0.00</b><i class="u">min</i></div>
+    <div class="stat"><span>Min</span><b id="sMin">0.00</b><i class="u">min</i></div>
+    <div class="stat"><span>Max</span><b id="sMax">0.00</b><i class="u">min</i></div>
   </div>
   <div class="list" id="list"></div>
   <div class="tools">
@@ -221,7 +225,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,rgba(33,93,165,.25),tra
     setStat('sNorm',f(norm));setStat('sStd',f(std));
     var l=$('list');
     if(!n){l.innerHTML='<div class="empty">No cycles yet.<br>Press START, then '+(mode==='cont'?'LAP at the end of each cycle.':'STOP at the end of each cycle.')+'</div>'}
-    else{l.innerHTML=times.map(function(t,i){return '<div class="item'+(i===addedIdx?' new':'')+'"><i>Cycle '+(i+1)+'<b>'+f(t)+'</b></i><button data-i="'+i+'" aria-label="Delete cycle '+(i+1)+'">&times;</button></div>'}).reverse().join('')}
+    else{l.innerHTML=times.map(function(t,i){return '<div class="item'+(i===addedIdx?' new':'')+'"><i>Cycle '+(i+1)+'<b>'+f(t)+'</b><em class="u">min</em></i><button data-i="'+i+'" aria-label="Delete cycle '+(i+1)+'">&times;</button></div>'}).reverse().join('')}
     var m=$('main'),s=$('side');
     document.querySelectorAll('#modes button').forEach(function(b){b.classList.toggle('on',b.dataset.m===mode);b.disabled=running});
     $('modes').querySelector('.seg-thumb').style.transform = mode==='ss' ? 'translateX(100%)' : 'translateX(0%)';
